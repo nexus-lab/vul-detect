@@ -1,43 +1,86 @@
 # githInteract.py
-'''
+"""
     Module containing methods with ability to interact with Github API v3
     PyGithub required dependency
-'''
+    pygit2 required dependency
+"""
 
-from github import Github
+from github import Github   # GitHub interaction
+import pygit2   # Git command interaction
+import os   # OS interaction
+import shutil, stat   # Directory management
 
 class githInteract:
     # TODO: Add exception handling for hourly call limit
 
-    def __init__(self, token):
-        # Object requires token
-        self._g = Github(token)
-
+    def __init__(self, inpt, *args):
+        # Args = -a Tuple = [Username, Password], -t Str = Token
+        # TODO: Cleanup code, exception handling
+        if '-t' in args:
+            try:
+                self._g = Github(inpt)
+            except:
+                print("Improper input data type")
+        elif '-a' in args:
+            try:
+                self._g = Github(inpt[0], inpt[1])
+            except:
+                print("Improper input data type")
+        else:
+            raise ValueError("Improper argument, must declare -a or -t.")
 
     def get_all_reponame(self):
-        # Returns a list of names in repo of instantiated object
+        # Returns a list of repos associated with GitHub account
         names = list()
 
         for repo in self._g.get_user().get_repos():
-            names.append(repo.name)
+            names.append(repo.full_name)
 
         return names
 
     def get_user(self):
-        # Return user name of assigned github repo
+        # Return user name of associated GitHub account
         r = self._g.get_user().name
         return r
 
+    def get_user_id(self):
+        # Return user id of associated GitHub account
+        id = self._g.get_user().id
+        return id
+
     def get_repo_contents(self, rName):
         # TODO: Exception handling for invalid name
-        # Get content of given repo
+        # List contents of given repo
         repo = self._g.get_repo(rName)
         internal = repo.get_contents("")
 
         while internal:
-            # TODO: Adapt to hard coded data rather than directory listing
             files = internal.pop(0)
             if files.type == "dir":
                 internal.extend(repo.get_contents(files.path))
             else:
                 print(files)
+
+    def write_change(self, func, path, info):
+        # Handling write path issues when deleting files
+        # Utility method
+        os.chmod(path, stat.S_IWRITE)
+        os.unlink(path)
+
+    def clone_repo(self, rName):
+        # Clones input repo name for associated account
+        # Returns path to cloned repo
+        # TODO: Cleanup code
+        repo = self._g.get_repo(rName)
+        path = os.getcwd() + '/temp/' + rName
+
+        try:
+            pygit2.clone_repository(repo.git_url, path)
+        except ValueError:
+            shutil.rmtree(path, onerror=self.write_change)
+            shutil.rmtree(path, ignore_errors=True)  # Kind of crude, but it works.
+            pygit2.clone_repository(repo.git_url, path)
+
+        return path  # Unsure if needed as of yet
+
+
