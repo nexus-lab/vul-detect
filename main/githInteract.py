@@ -6,9 +6,11 @@
 """
 
 from github import Github   # GitHub interaction
+from main import utility as u  # Utility methods
 import pygit2   # Git command interaction
 import os   # OS interaction
-import shutil, stat   # Directory management
+import shutil  # Directory management
+
 
 class githInteract:
     # TODO: Add exception handling for hourly call limit
@@ -50,22 +52,19 @@ class githInteract:
 
     def get_repo_contents(self, rName):
         # TODO: Exception handling for invalid name
-        # List contents of given repo
+        # Return list contents of given repo
         repo = self._g.get_repo(rName)
         internal = repo.get_contents("")
+        contents = list()
 
         while internal:
             files = internal.pop(0)
             if files.type == "dir":
                 internal.extend(repo.get_contents(files.path))
             else:
-                print(files)
+                contents.append(files)
 
-    def write_change(self, func, path, info):
-        # Handling write path issues when deleting files
-        # Utility method
-        os.chmod(path, stat.S_IWRITE)
-        os.unlink(path)
+        return contents
 
     def clone_repo(self, rName):
         # Clones input repo name for associated account
@@ -77,10 +76,9 @@ class githInteract:
         try:
             pygit2.clone_repository(repo.git_url, path)
         except ValueError:
-            shutil.rmtree(path, onerror=self.write_change)
-            shutil.rmtree(path, ignore_errors=True)  # Kind of crude, but it works.
+            shutil.rmtree(path, onerror=u.write_change)
+            shutil.rmtree(path, ignore_errors=True)  # Kind of crude, but it works
             pygit2.clone_repository(repo.git_url, path)
 
-        return path  # Unsure if needed as of yet
-
+        return path
 

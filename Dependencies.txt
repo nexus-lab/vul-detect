@@ -1,3 +1,5 @@
 List of dependencies:
 	- PyGithub 
 	- pygit2
+	- bandit
+	- flawfinder
