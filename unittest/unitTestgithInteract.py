@@ -1,7 +1,6 @@
 #unitTestgithInteract.py
 """
     Unit Testing Suite for githInteract.py module
-    NOTE: Unfilled version of unitTestSuite module
 """
 
 import unittest
@@ -10,7 +9,9 @@ from main.githInteract import githInteract as g
 
 class unitTestgithInteract(unittest.TestCase):
     token = 'Test token here'
-    # TODO: Needs test of constructor using username and password
+
+    # def test_constructor(self):
+    #    self.assertEqual(g(['poop'], '-a'), "Wrong username or password/input error:  list index out of range")
 
     def test_get_all_reponame(self):
         h = g(self.token, '-t')

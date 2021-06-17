@@ -5,11 +5,12 @@
     pygit2 required dependency
 """
 
-from github import Github   # GitHub interaction
+from github import Github, GithubException  # GitHub interaction, exception handling
 from main import utility as u  # Utility methods
 import pygit2   # Git command interaction
 import os   # OS interaction
 import shutil  # Directory management
+from main.vulErrors import TokenError, PasswordUserError  # Class exception handling
 
 
 class githInteract:
@@ -17,17 +18,16 @@ class githInteract:
 
     def __init__(self, inpt, *args):
         # Args = -a Tuple = [Username, Password], -t Str = Token
-        # TODO: Cleanup code, exception handling
         if '-t' in args:
             try:
                 self._g = Github(inpt)
-            except:
-                print("Improper input data type")
+            except (GithubException, TypeError, ValueError, IndexError) as e:
+                raise TokenError(e)
         elif '-a' in args:
             try:
                 self._g = Github(inpt[0], inpt[1])
-            except:
-                print("Improper input data type")
+            except (GithubException, TypeError, ValueError, IndexError) as e:
+                raise PasswordUserError(e)
         else:
             raise ValueError("Improper argument, must declare -a or -t.")
 
@@ -69,7 +69,7 @@ class githInteract:
     def clone_repo(self, rName):
         # Clones input repo name for associated account
         # Returns path to cloned repo
-        # TODO: Cleanup code
+        # TODO: Add identifier tied to cloned repository
         repo = self._g.get_repo(rName)
         path = os.getcwd() + '/temp/' + rName
 

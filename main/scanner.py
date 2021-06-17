@@ -16,11 +16,11 @@ class scanner:
 
     def bandit_scan(self):
         # Static python source code vulnerability analysis
-        subprocess.call(["bandit", "-r", self.path, "-f", "csv", "-o", self.path + "/scanresultspy.csv"])
+        subprocess.call(["bandit", "-r", self.path, "-f", "csv", "-o", self.path + "\\scanresultspy.csv"])
 
     def flawfinder_scan(self):
         # Static C/C++ source code vulnerability analysis
-        out = open(self.path + "test.csv", "w")
+        out = open(self.path + "\\test.csv", "w")
         subprocess.call(["flawfinder", "--csv", self.path], stdout=out)
         out.close()
         # output = subprocess.getoutput('flawfinder --csv ' + self.path)
