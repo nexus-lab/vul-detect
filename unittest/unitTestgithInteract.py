@@ -34,6 +34,10 @@ class unitTestgithInteract(unittest.TestCase):
     def test_clone_repo(self):
         h = g(self.token, '-t')
         h.clone_repo("Repository name here")  # Tests write_change function
+		
+	def test_git_clone_repo(self):
+        h = g1("Repository link here")
+        h.git_clone_repo()
 
 
 if __name__ == '__main__':
