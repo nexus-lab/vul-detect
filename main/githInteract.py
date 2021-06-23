@@ -5,7 +5,7 @@
     pygit2 required dependency
 """
 
-from github import Github  # GitHub interaction, exception handling
+from github import Github, GithubException  # GitHub interaction, exception handling
 from main import utility as u  # Utility methods
 import pygit2   # Git command interaction
 import os   # OS interaction
@@ -13,23 +13,24 @@ import shutil  # Directory management
 from main.vulErrors import TokenError, PasswordUserError  # Class exception handling
 
 
-class githInteract:
+class GithInteract:
     # TODO: Add exception handling for hourly call limit
 
-    def __init__(self, inpt, *args):
-        # Args = -a Tuple = [Username, Password], -t Str = Token
-        if '-t' in args:
+    def __init__(self, inpt):
+        # inpt must be a list or tuple of string(s)
+        if len(inpt) == 1:
             try:
-                self._g = Github(inpt)
-            except Exception as e:
+                self._g = Github(inpt[0])
+            except (GithubException, TypeError, ValueError) as e:
                 raise TokenError(e)
-        elif '-a' in args:
+        elif len(inpt) == 2:
             try:
                 self._g = Github(inpt[0], inpt[1])
-            except Exception as e:
+            except (GithubException,TypeError, ValueError) as e:
                 raise PasswordUserError(e)
         else:
-            raise ValueError("Improper argument, must declare -a or -t.")
+            raise ValueError("Improper input length. Input must be list/tuple of one to two strings")
+
 
     def get_all_reponame(self):
         # Returns a list of repos associated with GitHub account
@@ -49,10 +50,6 @@ class githInteract:
         # Return user id of associated GitHub account
         id = self._g.get_user().id
         return id
-
-    def get_git_url_repo(self, rName):
-        # Return git url of repo associated with GitHub account
-        return self._g.get_repo(rName).git_url
 
     def get_repo_contents(self, rName):
         # TODO: Exception handling for invalid name
@@ -86,29 +83,3 @@ class githInteract:
 
         return path
 
-
-class gitInteract():
-    # Object associated with provided git url
-    # TODO: Cleanup code, consider separate module
-
-    def __init__(self, url):
-        # Constructor - instantiates working path based on given url
-        self.url = url
-        self.path = u.return_path() + '\\temp'
-        for each in url.split('/'):  # To return the object associated with the git object
-            if each == 'github.com' or each == '' or each == 'https:':
-                pass
-            else:
-                self.path = self.path + '/' + each.split('.')[0]  # Apparently '\\' doesn't work???
-
-    def git_clone_repo(self):
-        # Clones repo based on input git link
-
-        try:
-            pygit2.clone_repository(self.url, self.path)
-        except ValueError:
-            shutil.rmtree(self.path, onerror=u.write_change)
-            shutil.rmtree(self.path, ignore_errors=True)  # Kind of crude, but it works
-            pygit2.clone_repository(self.url, self.path)
-
-        return self.path

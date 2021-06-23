@@ -4,12 +4,12 @@
 """
 
 
-class githInteractException(Exception):
+class GithInteractException(Exception):
     """Base class for githInteract exceptions"""
     pass
 
 
-class TokenError(githInteractException):
+class TokenError(GithInteractException):
     """Exception raised when incorrect token supplied.
 
     Attributes:
@@ -29,8 +29,7 @@ class TokenError(githInteractException):
         else:
             return 'Improper token/Input error'
 
-
-class PasswordUserError(githInteractException):
+class PasswordUserError(GithInteractException):
     """Exception raised when username or password fails.
 
     Attributes:
