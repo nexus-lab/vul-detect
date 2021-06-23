@@ -5,7 +5,7 @@
     pygit2 required dependency
 """
 
-from github import Github, BadCredentialsException  # GitHub interaction, exception handling
+from github import Github  # GitHub interaction, exception handling
 from main import utility as u  # Utility methods
 import pygit2   # Git command interaction
 import os   # OS interaction
@@ -21,12 +21,12 @@ class githInteract:
         if '-t' in args:
             try:
                 self._g = Github(inpt)
-            except (BadCredentialsException, TypeError, ValueError, IndexError) as e:
+            except Exception as e:
                 raise TokenError(e)
         elif '-a' in args:
             try:
                 self._g = Github(inpt[0], inpt[1])
-            except (BadCredentialsException, TypeError, ValueError, IndexError) as e:
+            except Exception as e:
                 raise PasswordUserError(e)
         else:
             raise ValueError("Improper argument, must declare -a or -t.")
