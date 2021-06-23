@@ -3,3 +3,5 @@ List of dependencies:
 	- pygit2
 	- bandit
 	- flawfinder
+	- trufflehog
+	- gitrob

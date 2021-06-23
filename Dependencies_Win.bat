@@ -6,3 +6,4 @@ pip install PyGithub
 pip install pygit2
 pip install bandit
 pip install flawfinder
+pip install trufflehog
