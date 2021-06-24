@@ -1,4 +1,4 @@
-# Utility.py
+# utility.py
 """
     Collection of functions needed as utility
 """
@@ -14,10 +14,10 @@ def write_change(func, path, info):
     os.chmod(path, stat.S_IWRITE)
     os.unlink(path)
 
+
 def clear_temp():
     # Utility method, will clear temp folder
     path = os.getcwd() + '/temp/'
-    print(path)
 
     try:
         shutil.rmtree(path, ignore_errors=True)
