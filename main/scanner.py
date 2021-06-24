@@ -1,28 +1,35 @@
-#scanner.py
+#Scanner.py
 """
     Scanner class - will contain functions conducting vulnerability scans
 """
 
 import subprocess  # Application handling
-import os  # Directory navigation
+import os # Directory navigation
 
-
-class scanner:
-    # TODO: Needs more secure implementation
-    # TODO: DO we need a Java/Other language implementation
+class Scanner:
+    # TODO: Needs better implementation of scan tools
 
     def __init__(self, path):
         # Must instantiate an operating path for scanner to operate
-        # TODO: Add check for installed scan tools
+        # TODO: Add automatic install of missing tools
+
+
         self.path = path
 
     def bandit_scan(self):
         # Static python source code vulnerability analysis
+        try:
+            subprocess.call(['bandit', '--version'])
+        except FileNotFoundError:
+            raise FileNotFoundError("Bandit is not installed on this system.")
         subprocess.call(["bandit", "-r", self.path, "-f", "csv", "-o", self.path + "\\scanresultspy.csv"])
 
     def flawfinder_scan(self):
         # Static C/C++ source code vulnerability analysis
-        # TODO: Implement way of handling errors produced by flawfinder
+        try:
+            subprocess.call(['flawfinder', '--version'])
+        except FileNotFoundError:
+            raise FileNotFoundError("FlawFinder is not installed on this system.")
         out = open(self.path + "\\test.csv", "w")
         subprocess.call(["flawfinder", "--csv", self.path], stdout=out)
         out.close()
@@ -38,3 +45,4 @@ class scanner:
     def gitleaks_scan(self):
         # GitHub secret scanning - requires standalone executable
         subprocess.call(["gitleaks", "--path=" + self.path, "--report=" + os.getcwd() + "/temp/other.json"])
+

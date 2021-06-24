@@ -1,4 +1,4 @@
-# utility.py
+# Utility.py
 """
     Collection of functions needed as utility
 """
@@ -13,7 +13,6 @@ def write_change(func, path, info):
     # Utility method
     os.chmod(path, stat.S_IWRITE)
     os.unlink(path)
-
 
 def clear_temp():
     # Utility method, will clear temp folder
