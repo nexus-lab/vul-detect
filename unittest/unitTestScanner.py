@@ -23,10 +23,10 @@ class UnitTestScanner(unittest.TestCase):
         self.t.flawfinder_scan()
 
     def test_trufflehog_scan(self):
-        self.t.trufflehog_scan("https://github.com/trufflesecurity/truffleHog.git")
+        self.t.trufflehog_scan("Git link here")
 
     def test_gitleaks_scan(self):
-        t = s(utility.return_path() + "/temp/nexus-lab/vul-detect")
+        t = s(utility.return_path() + "path end here")
         t.gitleaks_scan()
 
 if __name__ == '__main__':
