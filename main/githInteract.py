@@ -5,32 +5,29 @@
     pygit2 required dependency
 """
 
-from github import Github, GithubException  # GitHub interaction, exception handling
+from github import Github  # GitHub interaction, exception handling
 from main import utility as u  # Utility methods
 import pygit2   # Git command interaction
 import os   # OS interaction
 import shutil  # Directory management
-from main.vulErrors import TokenError, PasswordUserError  # Class exception handling
 
 
 class GithInteract:
     # TODO: Add exception handling for hourly call limit
 
     def __init__(self, inpt):
-        # inpt must be a list of string(s)
-        if len(inpt) == 1:
-            try:
+        # Must provide tuple/list[username, password] or str(token)
+        if len(inpt) == 1 or type(inpt) == str:
+            if type(inpt) == str:
+                self._g = Github(inpt)
+            else:
                 self._g = Github(inpt[0])
-            except (GithubException, TypeError, ValueError) as e:
-                raise TokenError(e)
+            self.ratelimit = self._g.get_rate_limit()
         elif len(inpt) == 2:
-            try:
-                self._g = Github(inpt[0], inpt[1])
-            except (GithubException,TypeError, ValueError) as e:
-                raise PasswordUserError(e)
+            self._g = Github(inpt[0], inpt[1])
+            self.ratelimit = self._g.get_rate_limit()
         else:
             raise ValueError("Improper input length. Input must be list of one to two strings")
-
 
     def get_all_reponame(self):
         # Returns a list of repos associated with GitHub account
@@ -43,13 +40,11 @@ class GithInteract:
 
     def get_user(self):
         # Return user name of associated GitHub account
-        r = self._g.get_user().name
-        return r
+        return self._g.get_user().name
 
     def get_user_id(self):
         # Return user id of associated GitHub account
-        id = self._g.get_user().id
-        return id
+        return self._g.get_user().id
 
     def get_git_url_repo(self, rName):
         # Return git url of repo associated with GitHub account
@@ -71,6 +66,20 @@ class GithInteract:
 
         return contents
 
+    def search_git_urls(self, query, count):
+        # Returns list of git urls based on query
+        repo = self._g.search_repositories(query=query)
+        repolist = []
+        i = 0
+
+        for repos in repo:
+            repolist.append(repos.git_url)
+            i += 1
+            if i == count:
+                break
+
+        return repolist
+
     def clone_repo(self, rName):
         # Clones input repo name for associated account
         # Returns path to cloned repo
@@ -87,7 +96,8 @@ class GithInteract:
 
         return path
 
-class GitInteract():
+
+class GitInteract:
     # Object associated with provided git url
     # TODO: Cleanup code, consider separate module
 
@@ -96,7 +106,7 @@ class GitInteract():
         self.url = url
         self.path = u.return_path() + '\\temp'
         for each in url.split('/'):  # To return the object associated with the git object
-            if each == 'github.com' or each == '' or each == 'https:':
+            if each == 'github.com' or each == '' or each == 'https:' or each == 'git:':
                 pass
             else:
                 self.path = self.path + '/' + each.split('.')[0]  # Apparently '\\' doesn't work???

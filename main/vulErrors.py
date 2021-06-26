@@ -29,6 +29,7 @@ class TokenError(GithInteractException):
         else:
             return 'Improper token/Input error'
 
+
 class PasswordUserError(GithInteractException):
     """Exception raised when username or password fails.
 
