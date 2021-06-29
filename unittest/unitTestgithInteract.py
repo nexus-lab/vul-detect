@@ -37,6 +37,13 @@ class UnitTestGithInteract(unittest.TestCase):
         h = g1("")
         h.git_clone_repo()
 
+    def test_get_collaborators(self):
+        self.assertEqual(self.h.get_collaborators(''), [''])
+
+    def test_git_collaborators(self):
+        e3 = g1('')
+        print(e3.git_collaborators())
+
 
 if __name__ == '__main__':
     unittest.main()
