@@ -1,11 +1,17 @@
 # user.py
-from org import Org
 
+#TODO: Add vulnerability setter method
+class User():
 
-class User(Org):
+    def __init__(self, names, repo):
+        # list, string
+        self.names = names
+        self.repo = repo
 
-    def __init__(self, name, repos, vulns):
-        # Str, list, dic
-        self.name = name
-        self.repos = repos
-        self.vuln = vulns
+    def get_users(self):
+        # Returns list of names
+        return self.names
+
+    def print_info(self):
+        # Prints the users and repo name associated with them
+        return print(f'Repository: {self.repo}\nUsers: {self.names}\n')

@@ -1,11 +1,12 @@
 # repo.py
-from org import Org
 
+#TODO: Add vulnerability setter method
+class Repo():
 
-class Repo(Org):
-
-    def __init__(self, name, vulns):
-        # String, dic
+    def __init__(self, name):
+        # String
         self.name = name
-        self.vulns = vulns
 
+    def get_name(self):
+        # Returns name
+        return self.name
