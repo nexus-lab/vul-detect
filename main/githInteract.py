@@ -66,6 +66,16 @@ class GithInteract:
 
         return contents
 
+    def get_collaborators(self, rName):
+        # Returns list of collaborators associated with repo
+        r = self._g.get_repo(rName)
+        collab_names = []
+
+        for each in r.get_collaborators():
+            collab_names.append(each.name)
+
+        return collab_names
+
     def search_git_urls(self, query, count):
         # Returns list of git urls based on query
         repo = self._g.search_repositories(query=query)
@@ -122,3 +132,19 @@ class GitInteract:
             pygit2.clone_repository(self.url, self.path)
 
         return self.path
+
+    def git_collaborators(self):
+        # Needs path to .git
+        repo = pygit2.Repository(self.path)
+        names = []
+
+        for commit in repo.walk(repo.head.target):
+            if commit.author.name in names:
+                pass
+            else:
+                names.append(commit.author.name)
+                # print(commit.author.name)
+
+        sorted_names = sorted(names)
+
+        return sorted_names
