@@ -15,17 +15,18 @@ class Scanner:
         # Must instantiate an operating path for scanner to operate
         # TODO: Add handling for missing tools
         self.path = path
+        self.temp = os.getcwd() + '\\temp'
 
     def bandit_scan(self):
         # Static python source code vulnerability analysis
         try:
-            subprocess.call(["bandit", "-r", self.path, "-f", "csv", "-o", self.path + "\\bandit.csv"])
+            subprocess.call(["bandit", "-r", self.path, "-f", "csv", "-o", self.temp + "\\bandit.csv"])
         except FileNotFoundError:
             raise FileNotFoundError("Bandit is not installed on this system.")
 
     def flawfinder_scan(self):
         # Static C/C++ source code vulnerability analysis
-        out = open(self.path + "\\flawfinder.csv", "w")
+        out = open(self.temp + "\\flawfinder.csv", "w")
         try:
             subprocess.call(["flawfinder", "--csv", self.path], stdout=out)
         except FileNotFoundError:
