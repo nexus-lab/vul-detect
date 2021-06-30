@@ -120,6 +120,8 @@ class GitInteract:
                 pass
             else:
                 self.path = self.path + '/' + each.split('.')[0]  # Apparently '\\' doesn't work???
+        self.org = self.path.split('/')[-2]
+        self.repo = self.path.split('/')[-1]
 
     def git_clone_repo(self):
         # Clones repo based on input git link
@@ -143,8 +145,15 @@ class GitInteract:
                 pass
             else:
                 names.append(commit.author.name)
-                # print(commit.author.name)
 
         sorted_names = sorted(names)
 
         return sorted_names
+
+    def get_organization(self):
+        # Return organization name
+        return self.org
+
+    def get_repo(self):
+        # Return repository name
+        return self.repo

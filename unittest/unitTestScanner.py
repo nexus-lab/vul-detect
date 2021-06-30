@@ -9,7 +9,7 @@ from main import utility
 
 
 class UnitTestScanner(unittest.TestCase):
-    path = utility.return_path() + '\\temp'
+    path = utility.return_path() + ''
     token = ['']
 
     def setUp(self):
