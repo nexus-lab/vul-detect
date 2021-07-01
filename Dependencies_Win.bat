@@ -7,3 +7,5 @@ pip install pygit2
 pip install bandit
 pip install flawfinder
 pip install trufflehog
+pip install networkx
+pip install mathplotlib
