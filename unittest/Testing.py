@@ -8,9 +8,9 @@ from main.scanner import Scanner as Sc
 import networkx
 import matplotlib.pyplot as plt
 import networkx.drawing as nx
-from process.user import User
+from process.users import Users
 from process.repo import Repo
-import os
+
 
 token = ['']
 
@@ -32,7 +32,7 @@ User_counter = 0
 Search_number = 3
 
 # Returns a list of git urls with Python as query
-repo_url_list = g.search_git_urls('science', Search_number)
+repo_url_list = g.search_git_urls('ai', Search_number)
 
 
 for repo in repo_url_list:
@@ -41,10 +41,10 @@ for repo in repo_url_list:
     temp_path = git.git_clone_repo()
 
     # Appends Repo_list with a Repo object
-    Repo_list.append(Repo(git.get_repo()))
+    Repo_list.append(Repo(git.get_repo(), vulns={}))
 
     # Appends User_list with a User object
-    User_list.append(User(git.git_collaborators(), git.get_repo()))
+    User_list.append(Users(git.git_collaborators(), git.get_repo(), vulns={}))
 
     # Scan testing
     scans = Sc(temp_path)

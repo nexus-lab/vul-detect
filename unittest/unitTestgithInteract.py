@@ -17,7 +17,7 @@ class UnitTestGithInteract(unittest.TestCase):
         self.h1 = g1('')
 
     def test_get_all_reponame(self):
-        self.assertEqual(self.h.get_all_reponame(), [''])
+        self.assertEqual(self.h.get_all_reponame(), [""])
 
     def test_get_user(self):
         self.assertTrue(self.h.get_user())
@@ -26,10 +26,10 @@ class UnitTestGithInteract(unittest.TestCase):
         self.assertTrue(self.h.get_user_id())
 
     def test_get_repo_contents(self):
-        self.h.get_repo_contents('')
+        self.h.get_repo_contents("")
 
     def test_clone_repo(self):
-        self.h.clone_repo('')  # Tests write_change function
+        self.h.clone_repo("")  # Tests write_change function
 
     def test_search_git_urls(self):
         self.h.search_git_urls('', 0)
