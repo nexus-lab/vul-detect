@@ -16,17 +16,18 @@ class Scanner:
         # TODO: Add handling for missing tools
         self.path = path
         self.temp = os.getcwd() + '\\temp'
+        self.repo = self.path.split('/')[-1]
 
     def bandit_scan(self):
         # Static python source code vulnerability analysis
         try:
-            subprocess.call(["bandit", "-r", self.path, "-f", "csv", "-o", self.temp + "\\bandit.csv"])
+            subprocess.call(["bandit", "-r", self.path, "-f", "csv", "-o", self.temp + "\\bandit" + self.repo + ".csv"])
         except FileNotFoundError:
             raise FileNotFoundError("Bandit is not installed on this system.")
 
     def flawfinder_scan(self):
         # Static C/C++ source code vulnerability analysis
-        out = open(self.temp + "\\flawfinder.csv", "w")
+        out = open(self.temp + "\\flawfinder" + self.repo + ".csv", "w")
         try:
             subprocess.call(["flawfinder", "--csv", self.path], stdout=out)
         except FileNotFoundError:
@@ -37,10 +38,10 @@ class Scanner:
         # GitHub ENTROPY/REGEX SECRET scans
         # NOTE: Line 381 in trufflehog.py contains a bug disallowing proper usage on windows systems.
         # TODO: Implement trufflehog to scan ALREADY cloned repos
-        out = open(os.getcwd() + "/temp/trufflehog.json", "w")
+        out = open(os.getcwd() + "/temp/trufflehog" + self.repo + ".json", "w")
         subprocess.call(["trufflehog", "--json", url], stdout=out)
         out.close()
 
     def gitleaks_scan(self):
         # GitHub secret scanning - requires standalone executable
-        subprocess.call(["gitleaks", "--path=" + self.path, "--report=" + os.getcwd() + "/temp/gitleaks.json"])
+        subprocess.call(["gitleaks", "--path=" + self.path, "--report=" + os.getcwd() + "/temp/gitleaks" + self.repo + ".json"])
