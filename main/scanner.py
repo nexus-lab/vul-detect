@@ -4,7 +4,7 @@
 """
 
 import subprocess  # Application handling
-import os # Directory navigation
+import os  # Directory navigation
 
 
 class Scanner:

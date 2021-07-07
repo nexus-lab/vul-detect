@@ -15,7 +15,3 @@ class Repo:
     def get_name(self):
         # Returns name
         return self.name
-
-    def get_vulns(self):
-        # Returns vulnerabilities
-        return self.vulns
