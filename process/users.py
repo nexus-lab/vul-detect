@@ -20,3 +20,6 @@ class Users:
     def print_info(self):
         # Prints the users and repo name associated with them
         return print(f'Repository: {self.repo}\nUsers: {self.names}\n')
+
+    def get_vulns(self):
+        return self.vulns
