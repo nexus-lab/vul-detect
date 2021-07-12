@@ -8,8 +8,6 @@ from main.scanner import Scanner as Sc
 import networkx
 import matplotlib.pyplot as plt
 import networkx.drawing as nx
-from process.users import Users
-from process.repo import Repo
 from main.graph import Graph
 import process.vulnerabilityAssignment as va
 
@@ -31,10 +29,10 @@ User_list = []
 
 # Counter mainly used to help print information of each User object during for loop
 User_counter = 0
-Search_number = 5
+Search_number = 4
 
 # Returns a list of git urls with Python as query
-repo_url_list = g.search_git_urls('network', Search_number)
+repo_url_list = g.search_git_urls('org:nexus-lab', Search_number)
 
 
 for repo in repo_url_list:
@@ -72,5 +70,3 @@ bipartite_graph = Graph.bipartite_construct(User_list, Repo_list)
 color_map = Graph.get_color_map(bipartite_graph)
 nx.draw(bipartite_graph, node_color=color_map, with_labels=False)
 plt.show()
-
-

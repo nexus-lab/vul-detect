@@ -7,6 +7,7 @@ import networkx
 import networkx.drawing as nx
 import matplotlib.pyplot as plt
 
+
 class Graph:
     # TODO: Implement methods constructing graphs from scan data
 
@@ -30,9 +31,9 @@ class Graph:
         return bipartite_graph
 
     def graph_user(self, users):
-
+        # Input: List of users objects
+        # Output: user graph networkx object
         user_graph = networkx.Graph()
-
         all_vulns = {}
 
         for user in users:
@@ -40,27 +41,24 @@ class Graph:
             all_vulns.update(user.get_vulns())
 
         for key, value in all_vulns.items():
-            for key2, value2 in all_vulns.items():
-                for i in range(len(value)):
-                    for j in range(len(value)):
-
-                        if key2 == key:
-                            break
-
-                        try:
-                            if value2[i] in value[j]:
-                                user_graph.add_edge(key, key2)
-                                print(f'Vulnerability: {value2[i]}')
-                        except IndexError:
-                            break
+            for key1, value1 in all_vulns.items():
+                if key == key1:
+                    pass
+                else:
+                    for item in value:
+                        print('For user', key, ':', item, ' is equal to ', item, ' for user', key1)
+                        if item in value1:
+                            if user_graph.has_edge(key, key1):
+                                pass
+                            else:
+                                user_graph.add_edge(key, key1)
 
         return user_graph
 
-
     def graph_repository(self, repos):
-
+        # Input: list of repo objects
+        # Output: repo graph networkx object
         repo_graph = networkx.Graph()
-
         all_vulns = {}
 
         for repo in repos:
@@ -68,22 +66,19 @@ class Graph:
             all_vulns.update(repo.get_vulns())
 
         for key, value in all_vulns.items():
-            for key2, value2 in all_vulns.items():
-                for i in range(len(value)):
-                    for j in range(len(value)):
-
-                        if key2 == key:
-                            break
-
-                        try:
-                            if value2[i] in value[j]:
-                                repo_graph.add_edge(key, key2)
-                                print(f'Vulnerability: {value2[i]}')
-                        except (IndexError, TypeError):
-                            break
+            for key1, value1 in all_vulns.items():
+                if key == key1:
+                    pass
+                else:
+                    for item in value:
+                        print('For repo', key, ':', item, ' is equal to ', item, ' for repo', key1)
+                        if item in value1:
+                            if repo_graph.has_edge(key, key1):
+                                pass
+                            else:
+                                repo_graph.add_edge(key, key1)
 
         return repo_graph
-
 
     def get_color_map(self, bipartite_graph):
 
@@ -97,4 +92,3 @@ class Graph:
                 color_map.append('blue')
 
         return color_map
-
