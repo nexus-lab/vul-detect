@@ -2,20 +2,25 @@
 """
     Module containing methods that construct graph representations using networkx library
 """
-from process import vulnerabilityAssignment as v
 import networkx
-import networkx.drawing as nx
 import matplotlib.pyplot as plt
+from karateclub import DeepWalk
+from sklearn.decomposition import PCA
 
 
 class Graph:
-    # TODO: Implement methods constructing graphs from scan data
 
     def __init__(self):
         pass
 
     def bipartite_construct(self, users, repos):
-        # Input: List containing user objects and repo objects
+        """
+        Bipartite graph edges representing contributing users
+
+        :param users: Users object containing list of users
+        :param repos: Repo object containing list of repos
+        :return: networkx bipartite graph object
+        """
         bipartite_graph = networkx.Graph()
 
         for user in users:
@@ -31,8 +36,12 @@ class Graph:
         return bipartite_graph
 
     def graph_user(self, users):
-        # Input: List of users objects
-        # Output: user graph networkx object
+        """
+        Monopartite graphical representation of users based on vulnerabilities
+
+        :param users: List of users objects
+        :return: networkx monopartite graph of users
+        """
         user_graph = networkx.Graph()
         all_vulns = {}
 
@@ -56,8 +65,12 @@ class Graph:
         return user_graph
 
     def graph_repository(self, repos):
-        # Input: list of repo objects
-        # Output: repo graph networkx object
+        """
+        Monopartite graphical representation of repos based on vulnerabilities
+
+        :param repos: List of repo objects
+        :return: networkx monopartite graph of repos
+        """
         repo_graph = networkx.Graph()
         all_vulns = {}
 
@@ -81,7 +94,12 @@ class Graph:
         return repo_graph
 
     def get_color_map(self, bipartite_graph):
+        """
+        Constructs color map of bipartite graph
 
+        :param bipartite_graph: networkx bipartite graph
+        :return: List containing color mappings for graph
+        """
         color_map = []
         repos = {n for n, d in bipartite_graph.nodes(data=True) if d["bipartite"] == 'repos'}
 
@@ -92,3 +110,35 @@ class Graph:
                 color_map.append('blue')
 
         return color_map
+
+    def gen_embeddings(self, graph):
+        """
+        DeepWalk implementation
+
+        :param graph: networkx graph
+        :return: produced embeddings from input graph
+        """
+        model = DeepWalk(walk_length=100, dimensions=64, window_size=5)
+        model.fit(graph)
+        embeddings = model.get_embedding()
+        return embeddings
+
+    def show_cluster(self, node_no, embedding):
+        """
+        Outputs graphical representation of graph embeddings
+
+        :param node_no: number of nodes to display
+        :param embedding: matrix containing embeddings
+        :return: graph
+        """
+        nodes = embedding[node_no]
+
+        pca = PCA(n_components=2)
+        pca_out = pca.fit_transform(nodes)
+
+        plt.figure(figsize=(15, 10))
+        plt.scatter(pca_out[:, 0], pca_out[:, 1])
+        for i, node in enumerate(node_no):
+            plt.annotate(node, (pca_out[i, 0], pca_out[i, 1]))
+
+        plt.show()
