@@ -29,10 +29,10 @@ User_list = []
 
 # Counter mainly used to help print information of each User object during for loop
 User_counter = 0
-Search_number = 4
+Search_number = 3
 
 # Returns a list of git urls with Python as query
-repo_url_list = g.search_git_urls('org:nexus-lab', Search_number)
+repo_url_list = g.search_git_urls('ai', Search_number)
 
 
 for repo in repo_url_list:
@@ -70,3 +70,10 @@ bipartite_graph = Graph.bipartite_construct(User_list, Repo_list)
 color_map = Graph.get_color_map(bipartite_graph)
 nx.draw(bipartite_graph, node_color=color_map, with_labels=False)
 plt.show()
+
+# Deepwalk Implementation - Clustering
+test_graph = networkx.convert_node_labels_to_integers(Graph.graph_user(User_list))
+embeddings = Graph.gen_embeddings(test_graph)
+nodes = list(range(len(embeddings)))
+
+Graph.show_cluster(nodes, embeddings)
