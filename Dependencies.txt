@@ -7,3 +7,4 @@ List of dependencies:
 	- gitrob
 	- NetworkX
 	- mathplotlib
+	- karateclub
