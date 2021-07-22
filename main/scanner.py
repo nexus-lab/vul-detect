@@ -14,6 +14,7 @@ class Scanner:
     def __init__(self, path):
         # Must instantiate an operating path for scanner to operate
         # TODO: Add handling for missing tools
+        os.environ["PYTHONUTF8"] = "1"
         self.path = path
         self.temp = os.getcwd() + '\\temp'
         self.repo = self.path.split('/')[-1]
@@ -27,7 +28,7 @@ class Scanner:
 
     def flawfinder_scan(self):
         # Static C/C++ source code vulnerability analysis
-        out = open(self.temp + "\\flawfinder" + self.repo + ".csv", "w")
+        out = open(self.temp + "\\flawfinder" + self.repo + ".csv", "w", encoding="utf-8")
         try:
             subprocess.call(["flawfinder", "--csv", self.path], stdout=out)
         except FileNotFoundError:
