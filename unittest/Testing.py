@@ -44,7 +44,6 @@ for repo in repo_url_list:
     scans = Sc(temp_path)
     scans.bandit_scan()
     scans.flawfinder_scan()
-    # scans.trufflehog_scan(git.url)
     scans.gitleaks_scan()
 
     # Appends Repo_list with a Repo object

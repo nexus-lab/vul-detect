@@ -8,8 +8,7 @@ import os  # Directory navigation
 
 
 class Scanner:
-    # TODO: Needs better implementation of scan tools
-    # TODO: Add time tracking
+    # TODO: Direct implementation negating use of subprocess
 
     def __init__(self, path):
         # Must instantiate an operating path for scanner to operate
@@ -33,14 +32,6 @@ class Scanner:
             subprocess.call(["flawfinder", "--csv", self.path], stdout=out)
         except FileNotFoundError:
             raise FileNotFoundError("FlawFinder is not installed on this system.")
-        out.close()
-
-    def trufflehog_scan(self, url):
-        # GitHub ENTROPY/REGEX SECRET scans
-        # NOTE: Line 381 in trufflehog.py contains a bug disallowing proper usage on windows systems.
-        # TODO: Implement trufflehog to scan ALREADY cloned repos
-        out = open(os.getcwd() + "/temp/trufflehog" + self.repo + ".json", "w")
-        subprocess.call(["trufflehog", "--json", url], stdout=out)
         out.close()
 
     def gitleaks_scan(self):
