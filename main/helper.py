@@ -15,6 +15,7 @@ import networkx.drawing as nx
 
 
 class Helper:
+    # TODO: Change write section of functions to include metadata
 
     def __init__(self, githInteract):
         """
@@ -24,6 +25,7 @@ class Helper:
         :param gitInteract: Instantiated gitInteract object
         """
         self._gith = githInteract
+        self.graph = Graph()
 
     def return_query_list(self, query, number):
         """
@@ -36,6 +38,7 @@ class Helper:
         return self._gith.search_git_urls(query, number)
 
     def run_scans(self, path):
+        # TODO: Optimize
         """
         Operates scans with use of multithreading
 
@@ -94,13 +97,13 @@ class Helper:
         :param write:
         :return: networkx graph
         """
-        user_graph = Graph.graph_user(user_list)
+        user_graph = self.graph.graph_user(user_list)
 
         if show:
             nx.draw(user_graph, with_labels=True)
             plt.show()
         if write:
-            networkx.write_gexf(user_graph, os.getcwd() + 'users.gexf')
+            networkx.write_gexf(user_graph, os.getcwd() + '/users.gexf')
 
         return user_graph
 
@@ -113,13 +116,13 @@ class Helper:
         :param write:
         :return: networkx graph
         """
-        repo_graph = Graph.graph_repository(repo_list)
+        repo_graph = self.graph.graph_repository(repo_list)
 
         if show:
             nx.draw(repo_graph, with_labels=True)
             plt.show()
         if write:
-            networkx.write_gexf(repo_graph, os.getcwd() + 'repos.gexf')
+            networkx.write_gexf(repo_graph, os.getcwd() + '/repos.gexf')
 
         return repo_graph
 
@@ -133,25 +136,34 @@ class Helper:
         :param write:
         :return:
         """
-        bipartite_graph = Graph.bipartite_construct(user_list, repo_list)
-        color_map = Graph.get_color_map(bipartite_graph)
+        bipartite_graph = self.graph.bipartite_construct(user_list, repo_list)
+        color_map = self.graph.get_color_map(bipartite_graph)
 
         if show:
             nx.draw(bipartite_graph, node_color=color_map, with_labels=False)
             plt.show()
         if write:
-            networkx.write_gexf(bipartite_graph, os.getcwd() + 'usertorepo.gexf')
+            networkx.write_gexf(bipartite_graph, os.getcwd() + '/usertorepo.gexf')
 
         return bipartite_graph
 
     def gen_clusterings(self, graph, show=True, write=False):
+        # TODO: Needs way of altering figure dimensions for larger data sets
+        """
+
+
+        :param graph:
+        :param show:
+        :param write:
+        :return:
+        """
         label_info = str()
         int_graph = networkx.convert_node_labels_to_integers(graph, label_attribute=label_info)
-        embeddings = Graph.gen_embeddings(int_graph)
+        embeddings = self.graph.gen_embeddings(int_graph)
         nodes = list(range(len(embeddings)))
 
         if show:
-            Graph.show_cluster(nodes, embeddings)
+            self.graph.show_cluster(nodes, embeddings)
         if write:
             # TODO: IMPLEMENT
             pass
