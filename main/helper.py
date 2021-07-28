@@ -92,9 +92,9 @@ class Helper:
         """
         Creates user graph using list of users objects
 
-        :param user_list:
-        :param show:
-        :param write:
+        :param user_list: list of users objects
+        :param show: boolean value indicating use of plotlib
+        :param write: boolean value indicating to write to file or not
         :return: networkx graph
         """
         user_graph = self.graph.graph_user(user_list)
@@ -111,9 +111,9 @@ class Helper:
         """
         Creates repo graph using list of repo objects
 
-        :param repo_list:
-        :param show:
-        :param write:
+        :param repo_list: list of repo objects
+        :param show: boolean value indicating use of plotlib
+        :param write: boolean value indicating to write to file or not
         :return: networkx graph
         """
         repo_graph = self.graph.graph_repository(repo_list)
@@ -130,11 +130,11 @@ class Helper:
         """
         Creates bipartite graph using list of users and repo objects
 
-        :param user_list:
-        :param repo_list:
-        :param show:
-        :param write:
-        :return:
+        :param user_list: list of users objects
+        :param repo_list: list of repo objects
+        :param show: boolean value indicating use of plotlib
+        :param write: boolean value indicating to write to file or not
+        :return: networkx graph
         """
         bipartite_graph = self.graph.bipartite_construct(user_list, repo_list)
         color_map = self.graph.get_color_map(bipartite_graph)
@@ -149,13 +149,14 @@ class Helper:
 
     def gen_clusterings(self, graph, show=True, write=False):
         # TODO: Needs way of altering figure dimensions for larger data sets
+        # TODO: Needs way of displaying repo and user names
         """
+        Graph clustering to show dimensional relationship between nodes
 
-
-        :param graph:
-        :param show:
-        :param write:
-        :return:
+        :param graph: networkx graph
+        :param show: boolean value indicating use of plotlib
+        :param write: boolean value indicating whether to write to file or not
+        :return: window or file
         """
         label_info = str()
         int_graph = networkx.convert_node_labels_to_integers(graph, label_attribute=label_info)
@@ -165,5 +166,4 @@ class Helper:
         if show:
             self.graph.show_cluster(nodes, embeddings)
         if write:
-            # TODO: IMPLEMENT
-            pass
+            self.graph.show_cluster(nodes, embeddings, save_file=True)
