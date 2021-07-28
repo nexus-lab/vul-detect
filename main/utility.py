@@ -17,16 +17,17 @@ def write_change(func, path, info):
 
 def clear_temp():
     # Utility method, will clear temp folder
+    # TODO: Fix
     path = os.getcwd() + '/temp/'
 
     try:
         shutil.rmtree(path, ignore_errors=True)
         shutil.rmtree(path, onerror=write_change)
-    except shutil.Error as e:
+    except Exception as e:
         print(e, 'Trying second strategy')
         try:
             shutil.rmtree(path)
-        except shutil.Error as e:
+        except Exception as e:
             print(e)
 
 

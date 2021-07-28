@@ -55,7 +55,7 @@ class Graph:
                     pass
                 else:
                     for item in value:
-                        print('For user', key, ':', item, ' is equal to ', item, ' for user', key1)
+                        # print('For user', key, ':', item, ' is equal to ', item, ' for user', key1)
                         if item in value1:
                             if user_graph.has_edge(key, key1):
                                 pass
@@ -84,7 +84,7 @@ class Graph:
                     pass
                 else:
                     for item in value:
-                        print('For repo', key, ':', item, ' is equal to ', item, ' for repo', key1)
+                        # print('For repo', key, ':', item, ' is equal to ', item, ' for repo', key1)
                         if item in value1:
                             if repo_graph.has_edge(key, key1):
                                 pass
