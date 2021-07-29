@@ -166,4 +166,4 @@ class Helper:
         if show:
             self.graph.show_cluster(nodes, embeddings)
         if write:
-            self.graph.show_cluster(nodes, embeddings, save_file=True)
+            self.graph.show_cluster(nodes, embeddings, show=False, save_file=True)

@@ -124,12 +124,14 @@ class Graph:
         embeddings = model.get_embedding()
         return embeddings
 
-    def show_cluster(self, node_no, embedding, save_file=False):
+    def show_cluster(self, node_no, embedding, show=True, save_file=False):
         """
         Outputs graphical representation of graph embeddings
 
         :param node_no: number of nodes to display
         :param embedding: matrix containing embeddings
+        :param show: whether to show image or not, default=True
+        :param save_file: whether to save to file or not, default=False
         :return: graph
         """
         # TODO: Add ability to show user or repo names
@@ -144,7 +146,7 @@ class Graph:
         for i, node in enumerate(node_no):
             plt.annotate(node, (pca_out[i, 0], pca_out[i, 1]))
 
+        if show:
+            plt.show()
         if save_file:
             plt.savefig(path)
-        else:
-            plt.show()
