@@ -4,6 +4,7 @@
 """
 import networkx
 import matplotlib.pyplot as plt
+import os
 from karateclub import DeepWalk
 from sklearn.decomposition import PCA
 
@@ -123,15 +124,19 @@ class Graph:
         embeddings = model.get_embedding()
         return embeddings
 
-    def show_cluster(self, node_no, embedding):
+    def show_cluster(self, node_no, embedding, show=True, save_file=False):
         """
         Outputs graphical representation of graph embeddings
 
         :param node_no: number of nodes to display
         :param embedding: matrix containing embeddings
+        :param show: whether to show image or not, default=True
+        :param save_file: whether to save to file or not, default=False
         :return: graph
         """
+        # TODO: Add ability to show user or repo names
         nodes = embedding[node_no]
+        path = os.getcwd() + '/cluster.png'
 
         pca = PCA(n_components=2)
         pca_out = pca.fit_transform(nodes)
@@ -141,4 +146,7 @@ class Graph:
         for i, node in enumerate(node_no):
             plt.annotate(node, (pca_out[i, 0], pca_out[i, 1]))
 
-        plt.show()
+        if show:
+            plt.show()
+        if save_file:
+            plt.savefig(path)
