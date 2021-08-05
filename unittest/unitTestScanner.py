@@ -9,7 +9,7 @@ from main import utility
 
 
 class UnitTestScanner(unittest.TestCase):
-    path = utility.return_path() + ''
+    path = utility.return_path() + '\\temp/repohere'
     token = ['']
 
     def setUp(self):
@@ -23,11 +23,8 @@ class UnitTestScanner(unittest.TestCase):
     def test_flawfinder_scan(self):
         self.t.flawfinder_scan()
 
-    # def test_trufflehog_scan(self):
-    #     self.t.trufflehog_scan('')
-
     def test_gitleaks_scan(self):
-        t = s(utility.return_path() + "")
+        t = s(utility.return_path() + "/temp/repohere")
         t.gitleaks_scan()
 
 

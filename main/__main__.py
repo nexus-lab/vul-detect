@@ -39,9 +39,9 @@ def operate(helper, users, repos, write, show, switch='all'):
     h = helper  # To not have to type out helper
 
     if switch == 'user' or switch == 'all':
-        user_graph = h.gen_user_graph(users, show=show, write=write)
+        h.gen_user_graph(users, show=show, write=write)
     if switch == 'repo' or switch == 'all':
-        repo_graph = h.gen_repo_graph(repos, show=show, write=write)
+        h.gen_repo_graph(repos, show=show, write=write)
     if switch == 'bip' or switch == 'all':
         h.gen_bipartite_graph(users, repos, show=show, write=write)
     if switch == 'clustu' or switch == 'all':
@@ -56,7 +56,8 @@ def main():
     boolean, token = _load_config()  # Load token from config file, if exists
 
     parser = argparse.ArgumentParser(prog='vulDetect',
-                                     description='vulDetect - a GitHub vulnerability visualization tool')
+                                     description='vulDetect - a GitHub vulnerability visualization tool',
+                                     epilog='Clusterings will not work with only one repo')
     if boolean:
         print('TOKEN LOADED THROUGH CONFIG')
     else:

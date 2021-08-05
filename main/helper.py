@@ -158,8 +158,7 @@ class Helper:
         :param write: boolean value indicating whether to write to file or not
         :return: window or file
         """
-        label_info = str()
-        int_graph = networkx.convert_node_labels_to_integers(graph, label_attribute=label_info)
+        int_graph = networkx.convert_node_labels_to_integers(graph, label_attribute='names')
         embeddings = self.graph.gen_embeddings(int_graph)
         nodes = list(range(len(embeddings)))
 
