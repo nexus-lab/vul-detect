@@ -114,7 +114,7 @@ class GitInteract:
     def __init__(self, url):
         # Constructor - instantiates working path based on given url
         self.url = url
-        self.path = u.return_path() + '\\temp'
+        self.path = u.return_path() + '/temp'
         for each in url.split('/'):  # To return the object associated with the git object
             if each == 'github.com' or each == '' or each == 'https:' or each == 'git:':
                 pass
