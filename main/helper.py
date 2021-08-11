@@ -2,6 +2,7 @@
 """
     Helper class - methods that perform important roles in producing graph visualizations of scan metrics
 """
+from main.githInteract import GithInteract as gith
 from main.githInteract import GitInteract as git
 from main.scanner import Scanner
 from main.graph import Graph
@@ -21,10 +22,9 @@ class Helper:
         """
         Constructor
 
-        :param githInteract: Instatiated githInteract object
-        :param gitInteract: Instantiated gitInteract object
+        :param githInteract: GitHub API Token
         """
-        self._gith = githInteract
+        self._gith = gith(githInteract)
         self.graph = Graph()
 
     def return_query_list(self, query, number):
@@ -158,8 +158,7 @@ class Helper:
         :param write: boolean value indicating whether to write to file or not
         :return: window or file
         """
-        label_info = str()
-        int_graph = networkx.convert_node_labels_to_integers(graph, label_attribute=label_info)
+        int_graph = networkx.convert_node_labels_to_integers(graph, label_attribute='names')
         embeddings = self.graph.gen_embeddings(int_graph)
         nodes = list(range(len(embeddings)))
 
