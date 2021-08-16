@@ -57,7 +57,6 @@ vulDetect has the ability to load your api token through a json file named `conf
 If you do not know where to aquire a token, consult the GitHub documentation on [personal access tokens](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token).
 
 ## Sample Case
-___
 Provided a valid api token, vulDetect has the ability to scan repos based on an input query. See the [GitHub Search Documentation](https://docs.github.com/en/rest/reference/search) for more information.
 
 The command below will query GitHub for 10 repos from the organization Facebook and output the user graph associated with those repos provided a `config.json`: 
@@ -72,8 +71,7 @@ vulDetect -q language:python 10 -cr -w
 ```
 This will scan the top 10 python repos and produce the clusterings for repos to a file named `cluster.png`. The results can be interpreted to show which vulnerabilities are the most common among the ten python repos and which repos contributed to those vulnerabilities, likewise for users if `-cu` is specified. Notice the distance between nodes represents the similarity in relationship between any two repos. This can be representative of common vulnerabilities, common users with the same vulnerabilities, etc. (NOTE that names are not included in the output. *yet) 
 
-By default, vulDetect will show all graphs and outputs, but will not write any file unless you specify the `-w` argument. If you wish to do both, specify both `-w` and `-s`. vulDetect also does not have the ability to specify an output path (yet). vulDetect will (as of now) write all output files to the current working directory. See the laundry list at the bottom of this file for future prospective changes.  
-___
+By default, vulDetect will show all graphs and outputs, but will not write any file unless you specify the `-w` argument. If you wish to do both, specify both `-w` and `-s`. vulDetect also does not have the ability to specify an output path (yet). vulDetect will (as of now) write all output files to the current working directory. See the laundry list at the bottom of this file for future prospective changes.
 
 ## Credits and Information
 - Info on DeepWalk: http://perozzi.net/publications/14_kdd_deepwalk.pdf  
