@@ -3,6 +3,7 @@ install_dependencies:
 	sudo apt-get update -y
 	sudo apt-get install python3.8 -y
 	sudo apt-get install python3-pip -y
+	sudo apt-get install python3-venv -y
 	pip install build
 	wget https://github.com/zricethezav/gitleaks/releases/download/v7.5.0/gitleaks-linux-amd64
 	mv gitleaks-linux-amd64 gitleaks
