@@ -26,7 +26,7 @@ pip install dist/vulDetect-0.5.tar.gz
 ```
 
 ## Usage
-```bash
+```
 usage: vulDetect [-h] [-q QUERY NUMBER] [-w] [-s] [-b] [-u] [-r] [-cu] [-cr] TOKEN
 
 vulDetect - a GitHub vulnerability visualization tool
