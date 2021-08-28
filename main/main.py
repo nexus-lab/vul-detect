@@ -51,8 +51,6 @@ def operate(helper, users, repos, write, show, switch='all'):
 
 
 def main():
-    # TODO: Cleanup arguments/add functionality
-    # TODO: Add setup.cfg when completed
     boolean, token = _load_config()  # Load token from config file, if exists
 
     parser = argparse.ArgumentParser(prog='vulDetect',

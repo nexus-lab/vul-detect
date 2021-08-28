@@ -12,6 +12,10 @@ from sklearn.decomposition import PCA
 class Graph:
 
     def __init__(self):
+        """
+        Constructor of Graph class
+        """
+        # TODO: Consider static module
         pass
 
     def bipartite_construct(self, users, repos):
@@ -58,7 +62,7 @@ class Graph:
                     for item in value:
                         # print('For user', key, ':', item, ' is equal to ', item, ' for user', key1)
                         if item in value1:
-                            if user_graph.has_edge(key, key1):
+                            if user_graph.has_edge(key, key1):  # Prevent redundancy
                                 pass
                             else:
                                 user_graph.add_edge(key, key1)
@@ -87,7 +91,7 @@ class Graph:
                     for item in value:
                         # print('For repo', key, ':', item, ' is equal to ', item, ' for repo', key1)
                         if item in value1:
-                            if repo_graph.has_edge(key, key1):
+                            if repo_graph.has_edge(key, key1):  # Prevent redundancy
                                 pass
                             else:
                                 repo_graph.add_edge(key, key1)
@@ -119,22 +123,23 @@ class Graph:
         :param graph: networkx graph
         :return: produced embeddings from input graph
         """
-        model = DeepWalk(walk_length=100, dimensions=64, window_size=5)
+        model = DeepWalk(walk_length=100, dimensions=64, window_size=5)   # TODO: Consider dynamic parameters
         model.fit(graph)
         embeddings = model.get_embedding()
         return embeddings
 
-    def show_cluster(self, node_no, embedding, show=True, save_file=False):
+    def show_cluster(self, node_no, embedding, node_data, show=True, save_file=False):
         """
         Outputs graphical representation of graph embeddings
 
         :param node_no: number of nodes to display
         :param embedding: matrix containing embeddings
+        :param node_data: networkx object containing attributes of nodes
         :param show: whether to show image or not, default=True
         :param save_file: whether to save to file or not, default=False
         :return: graph
         """
-        # TODO: Add ability to show user or repo names
+        # TODO: Consider dynamic plot sizing
         nodes = embedding[node_no]
         path = os.getcwd() + '/cluster.png'
 
@@ -144,7 +149,7 @@ class Graph:
         plt.figure(figsize=(15, 10))
         plt.scatter(pca_out[:, 0], pca_out[:, 1])
         for i, node in enumerate(node_no):
-            plt.annotate(node, (pca_out[i, 0], pca_out[i, 1]))
+            plt.annotate(node_data[node]['name'], (pca_out[i, 0], pca_out[i, 1]))
 
         if show:
             plt.show()

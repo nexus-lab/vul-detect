@@ -16,11 +16,10 @@ import networkx.drawing as nx
 
 
 class Helper:
-    # TODO: Change write section of functions to include metadata
 
     def __init__(self, githInteract):
         """
-        Constructor
+        Constructor for Helper class
 
         :param githInteract: GitHub API Token
         """
@@ -38,12 +37,12 @@ class Helper:
         return self._gith.search_git_urls(query, number)
 
     def run_scans(self, path):
-        # TODO: Optimize
         """
         Operates scans with use of multithreading
 
         :param path: path to repository
         """
+        # TODO: Improve
         scanner = Scanner(path)
 
         try:
@@ -148,8 +147,6 @@ class Helper:
         return bipartite_graph
 
     def gen_clusterings(self, graph, show=True, write=False):
-        # TODO: Needs way of altering figure dimensions for larger data sets
-        # TODO: Needs way of displaying repo and user names
         """
         Graph clustering to show dimensional relationship between nodes
 
@@ -158,11 +155,14 @@ class Helper:
         :param write: boolean value indicating whether to write to file or not
         :return: window or file
         """
-        int_graph = networkx.convert_node_labels_to_integers(graph, label_attribute='names')
+        # TODO: Needs way of altering figure dimensions for larger data sets
+        # ORDERING!!!
+        int_graph = networkx.convert_node_labels_to_integers(graph, ordering='sorted', label_attribute='name')
+        node_data = int_graph.nodes.data()
         embeddings = self.graph.gen_embeddings(int_graph)
         nodes = list(range(len(embeddings)))
 
         if show:
-            self.graph.show_cluster(nodes, embeddings)
+            self.graph.show_cluster(nodes, embeddings, node_data)
         if write:
-            self.graph.show_cluster(nodes, embeddings, show=False, save_file=True)
+            self.graph.show_cluster(nodes, embeddings, node_data, show=False, save_file=True)

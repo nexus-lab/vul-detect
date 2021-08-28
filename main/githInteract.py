@@ -13,10 +13,13 @@ import shutil  # Directory management
 
 
 class GithInteract:
-    # TODO: Add exception handling for hourly call limit
 
     def __init__(self, inpt):
-        # Must provide tuple/list[username, password] or str(token)
+        """
+        Constructor for GithInteract object
+
+        :param inpt: GitHub API token string
+        """
         if len(inpt) == 1 or type(inpt) == str:
             if type(inpt) == str:
                 self._g = Github(inpt)
@@ -30,7 +33,11 @@ class GithInteract:
             raise ValueError("Improper input length. Input must be list of one to two strings")
 
     def get_all_reponame(self):
-        # Returns a list of repos associated with GitHub account
+        """
+        Returns a list of repos associated with GitHub account
+
+        :return: list of repo names
+        """
         names = list()
 
         for repo in self._g.get_user().get_repos():
@@ -39,20 +46,38 @@ class GithInteract:
         return names
 
     def get_user(self):
-        # Return user name of associated GitHub account
+        """
+        Return user name of associated GitHub account
+
+        :return: name of user, string
+        """
         return self._g.get_user().name
 
     def get_user_id(self):
-        # Return user id of associated GitHub account
+        """
+        Return user id of associated GitHub account
+
+        :return: id of GitHub account str
+        """
         return self._g.get_user().id
 
     def get_git_url_repo(self, rName):
-        # Return git url of repo associated with GitHub account
+        """
+        Return git url of repo associated with GitHub account
+
+        :param rName: name of repo, string
+        :return: git url of repo, string
+        """
         return self._g.get_repo(rName).git_url
 
     def get_repo_contents(self, rName):
-        # TODO: Exception handling for invalid name
-        # Return list contents of given repo
+        """
+        Return list contents of given repo
+
+        :param rName: name of repo, string
+        :return: list labelling contents of repo
+        """
+        # TODO: Exception handling for invalid name, consider deprecation
         repo = self._g.get_repo(rName)
         internal = repo.get_contents("")
         contents = list()
@@ -67,7 +92,12 @@ class GithInteract:
         return contents
 
     def get_collaborators(self, rName):
-        # Returns list of collaborators associated with repo
+        """
+        Returns list of collaborators associated with repo
+
+        :param rName: name of repo, string
+        :return: list of collaborators
+        """
         r = self._g.get_repo(rName)
         collab_names = []
 
@@ -77,7 +107,13 @@ class GithInteract:
         return collab_names
 
     def search_git_urls(self, query, count):
-        # Returns list of git urls based on query
+        """
+        Returns list of git urls based on query
+
+        :param query: string of query, see GitHub api documentation
+        :param count: integer number
+        :return: list of repos based on query
+        """
         repo = self._g.search_repositories(query=query)
         repolist = []
         i = 0
@@ -91,9 +127,12 @@ class GithInteract:
         return repolist
 
     def clone_repo(self, rName):
-        # Clones input repo name for associated account
-        # Returns path to cloned repo
-        # TODO: Add identifier tied to cloned repository
+        """
+        Clones input repo name for associated account
+
+        :param rName: input name of repo, string
+        :return: path to cloned repo, string
+        """
         repo = self._g.get_repo(rName)
         path = os.getcwd() + '/temp/' + rName
 
@@ -109,22 +148,29 @@ class GithInteract:
 
 class GitInteract:
     # Object associated with provided git url
-    # TODO: Cleanup code, consider separate module
 
     def __init__(self, url):
-        # Constructor - instantiates working path based on given url
+        """
+        Constructor for GitInteract class - instantiates working path based on given url
+
+        :param url: url to git repo, string
+        """
         self.url = url
         self.path = u.return_path() + '/temp'
         for each in url.split('/'):  # To return the object associated with the git object
             if each == 'github.com' or each == '' or each == 'https:' or each == 'git:':
                 pass
             else:
-                self.path = self.path + '/' + each.split('.')[0]  # Apparently '\\' doesn't work???
+                self.path = self.path + '/' + each.split('.')[0]
         self.org = self.path.split('/')[-2]
         self.repo = self.path.split('/')[-1]
 
     def git_clone_repo(self):
-        # Clones repo based on input git link
+        """
+        Clones repo based on input git link
+
+        :return: path to repo, string
+        """
 
         try:
             pygit2.clone_repository(self.url, self.path)
@@ -136,7 +182,11 @@ class GitInteract:
         return self.path
 
     def git_collaborators(self):
-        # Needs path to .git
+        """
+        Returns collaborators associated with repo - Needs path to .git
+
+        :return: names of collaborators, sorted list
+        """
         repo = pygit2.Repository(self.path)
         names = []
 
@@ -151,9 +201,17 @@ class GitInteract:
         return sorted_names
 
     def get_organization(self):
-        # Return organization name
+        """
+        Return organization name of repo
+
+        :return: organization name, string
+        """
         return self.org
 
     def get_repo(self):
-        # Return repository name
+        """
+        Return repository name
+
+        :return: repo name, string
+        """
         return self.repo

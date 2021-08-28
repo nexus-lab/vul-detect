@@ -8,9 +8,15 @@ import os  # Directory navigation
 
 
 class Scanner:
+    # TODO: Needs
 
     def __init__(self, path):
-        # Must instantiate an operating path for scanner to operate
+        """
+        Scanner Constructor - Must instantiate an operating path for scanner to operate
+        Force UTF-8 encoding on Windows systems
+
+        :param path: path to scan directory
+        """
         if os.name == 'nt':
             os.environ["PYTHONUTF8"] = "1"
         self.path = path
@@ -18,7 +24,9 @@ class Scanner:
         self.repo = self.path.split('/')[-1]
 
     def bandit_scan(self):
-        # Static python source code vulnerability analysis
+        """
+        Static python source code vulnerability analysis
+        """
         try:
             subprocess.call(["bandit", "-r", self.path, "-f", "csv", "-o", self.temp + "/bandit" + self.repo + ".csv"],
                             stderr=subprocess.DEVNULL)
@@ -26,8 +34,9 @@ class Scanner:
             raise FileNotFoundError("Bandit is not installed on this system.")
 
     def flawfinder_scan(self):
-        # Static C/C++ source code vulnerability analysis
-        # TODO: Add checks for proper operation of flawfinder
+        """
+        Static C/C++ source code vulnerability analysis
+        """
         out = open(self.temp + "/flawfinder" + self.repo + ".csv", "w", encoding="utf-8")
         try:
             subprocess.call(["flawfinder", "--csv", self.path], stdout=out)
@@ -36,7 +45,9 @@ class Scanner:
         out.close()
 
     def gitleaks_scan(self):
-        # GitHub secret scanning - requires standalone executable
+        """
+        GitHub secret scanning - requires standalone executable
+        """
         try:
             subprocess.call(["gitleaks", "--path=" + self.path,
                              "--report=" + os.getcwd() + "/temp/gitleaks" + self.repo + ".json"],

@@ -2,20 +2,32 @@
 """
     Module containing class representing repositories
 """
-# TODO: Add vulnerability setter method
 
 
 class Repo:
 
     def __init__(self, name, vulns):
-        # String, dictionary
+        """
+        Repo object constructor
+
+        :param name: name of repo, string
+        :param vulns: dictionary of vulnerabilities
+        """
         self.name = name
         self.vulns = vulns
 
     def get_name(self):
-        # Returns name
+        """
+        Returns name
+
+        :return: name of repo, string
+        """
         return self.name
 
     def get_vulns(self):
-        # Returns vulnerabilities
+        """
+        Returns vulnerabilities
+
+        :return: dictionary of vulnerabilities
+        """
         return self.vulns

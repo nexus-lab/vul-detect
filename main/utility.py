@@ -9,14 +9,21 @@ import shutil  # File usage
 
 
 def write_change(func, path, info):
-    # Handling write path issues when deleting files
-    # Utility method
+    """
+    Method handing write permission issues
+
+    :param func: function of issue, string
+    :param path: path to file, string
+    :param info: info of issue, string
+    """
     os.chmod(path, stat.S_IWRITE)
     os.unlink(path)
 
 
 def clear_temp():
-    # Utility method, will clear temp folder
+    """
+    Method to clear temp folder
+    """
     # TODO: Fix
     path = os.getcwd() + '/temp/'
 
@@ -32,5 +39,9 @@ def clear_temp():
 
 
 def return_path():
-    # Utility method to current directory path
+    """
+    Utility method to current directory path
+
+    :return: current working directory, string
+    """
     return os.getcwd()
